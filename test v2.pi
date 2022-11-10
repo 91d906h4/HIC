@@ -31,3 +31,55 @@ if(a > 10)
 endif
 
 print('Hello World!', a)  # This is comments
+
+# output:
+# Hello World!
+# 10
+# 10
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 9
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 8
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 7
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 6
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 5
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 4
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# 3
+# bbbbb
+# bbbbb
+# bbbbb
+# bbbbb
+# a is better than 10!
+# a is better than 20!!
+# YEAH
+# YEAH
+# YEAH
+# YEAH
+# Hello World!
+# 21
