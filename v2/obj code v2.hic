@@ -1,0 +1,31 @@
+VAL $a 10
+VAL $b 'asd'
+VAL $c 1.5
+VAL $d 1.5
+VAL $c $a
+ARR $arr 1, 2, 3, 'a', $d
+MSG 'Hello World!'
+MSG $a
+LAB JEATXYQQZC
+MSG $a
+VAL $b 1
+LAB THUYABGYTB
+MSG 'bbbbb'
+ADD $b 1
+JLT $b 5 THUYABGYTB
+SUB $a 1
+JLT 2 $a JEATXYQQZC
+VAL $a 21
+JLT $a 10 JHPXMFOLIV
+MSG 'a is better than 10!'
+JLT $a 20 KCJAJZOYSY
+MSG 'a is better than 20!!'
+LAB KCJAJZOYSY
+VAL $b 1
+LAB GCIYLNOWNP
+MSG 'YEAH'
+ADD $b 1
+JLT $b 5 GCIYLNOWNP
+LAB JHPXMFOLIV
+MSG 'Hello World!'
+MSG $a

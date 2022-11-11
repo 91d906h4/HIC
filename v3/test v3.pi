@@ -1,0 +1,56 @@
+var a = 10; var d = 20;
+var b = 'asd';
+var c = 1.5;
+var c = a;
+var arr = [1, 2, 3, 'a', d];
+print(120, a);
+
+var a = 10;
+
+if(a != 5){
+    print('a is not 5!!!');
+}
+
+if(a < 10){
+    print('a is less than 10!');
+}
+else{
+    print('a is greater than 10!');
+}
+
+print(a);
+if(a == 21){
+    print('a is 21!');
+}
+
+for(var a = 0, a <= 10, cal a = a + 1){
+    if(a > 5){
+        print(a);
+    }
+    else{
+        print('a is less than 5');
+    }
+    var b = 1;
+}
+
+var a = 10;
+
+if(a == 10){
+    print('acd');
+}
+else{
+    print('bcd');
+}
+while(a < 100){
+    cal a = a * 2;
+    print(a, 'a');
+}
+
+# print('Hello World!', a); # This is comments
+
+var a = 0;
+cal a = 1 + 2;
+cal a = 1 + a;
+print(a);
+cal a += 2;
+cal b *= 5

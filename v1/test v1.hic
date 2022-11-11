@@ -1,0 +1,16 @@
+VAL a 100
+VAL b 10
+
+ADD a b
+SUB b a
+VAL c 8
+ADD b 1000
+MSG a
+MSG b
+
+LAB TEST
+
+LDA 10
+MSG 'aasd10'
+JMP TEST
+END
