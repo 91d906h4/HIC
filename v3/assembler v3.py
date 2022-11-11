@@ -186,6 +186,7 @@ class Main:
             elif current_line.startswith('for'): self._for(current_line)
             elif current_line.startswith('while'): self._while(current_line)
             elif current_line.startswith('cal'): self._cal(current_line)
+            elif current_line.startswith('input'): self._input(current_line)
             elif current_line == '}': self._endparen()
 
             self.counter += 1
@@ -381,27 +382,35 @@ class Main:
         if '+=' in parse_line:
             par1, par2 = parse_line.split('+=')
             chk_par1 = Checker(par1)
+            chk_par2 = Checker(par2)
             chk_par1.isParam(exit=True)
-            if write_: write(f'ADD ${par1} {par2}')
-            else: return f'ADD ${par1} {par2}'
+            mark = '$' if chk_par2.isParam() else ''
+            if write_: write(f'ADD ${par1} {mark + par2}')
+            else: return f'ADD ${par1} {mark + par2}'
         elif '-=' in parse_line:
             par1, par2 = parse_line.split('-=')
             chk_par1 = Checker(par1)
+            chk_par2 = Checker(par2)
             chk_par1.isParam(exit=True)
-            if write_: write(f'SUB ${par1} {par2}')
-            else: return f'SUB ${par1} {par2}'
+            mark = '$' if chk_par2.isParam() else ''
+            if write_: write(f'SUB ${par1} {mark + par2}')
+            else: return f'SUB ${par1} {mark + par2}'
         elif '*=' in parse_line:
             par1, par2 = parse_line.split('*=')
             chk_par1 = Checker(par1)
+            chk_par2 = Checker(par2)
             chk_par1.isParam(exit=True)
-            if write_: write(f'MUL ${par1} {par2}')
-            else: return f'MUL ${par1} {par2}'
+            mark = '$' if chk_par2.isParam() else ''
+            if write_: write(f'MUL ${par1} {mark + par2}')
+            else: return f'MUL ${par1} {mark + par2}'
         elif '/=' in parse_line:
             par1, par2 = parse_line.split('/=')
             chk_par1 = Checker(par1)
+            chk_par2 = Checker(par2)
             chk_par1.isParam(exit=True)
-            if write_: write(f'DIV ${par1} {par2}')
-            else: return f'DIV ${par1} {par2}'
+            mark = '$' if chk_par2.isParam() else ''
+            if write_: write(f'DIV ${par1} {mark + par2}')
+            else: return f'DIV ${par1} {mark + par2}'
         elif '=' in parse_line:
             par1, par2 = parse_line.split('=')
             chk_par1 = Checker(par1)
@@ -440,6 +449,14 @@ class Main:
                 write(f'VAL ${par1} ${PARAM}')
             else:
                 return [f'VAL ${PARAM} {o1}', f'{OP} ${PARAM} {o2}', f'VAL ${par1} ${PARAM}']
+
+    def _input(self, current_line: str):
+        parse_line = current_line[5:].strip()
+        if parse_line[0] != '(' or parse_line[-1] != ')': self.err(3, f'Perhaps you forgot a paren.')
+        param = parse_line[1:-1]
+        chk_param = Checker(param)
+        chk_param.isParam(exit=True)
+        write(f'IPT ${param}')     
 
     def err(self, code: int, msg: str, error='') -> None:
         codes = {

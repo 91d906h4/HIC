@@ -8,81 +8,81 @@ current_line = ''
 file = ''
 
 class Checker:
-    def __init__(self, input: str) -> None:
-        self.input = input
+    def __init__(self, input_text: str) -> None:
+        self.input_text = input_text
     
     def isValidParam(self, exit=True):
-        if self.input[0] == '$' and len(self.input) > 1 and not self._isInt(self.input[1:]): return True
+        if self.input_text[0] == '$' and len(self.input_text) > 1 and not self._isInt(self.input_text[1:]): return True
         else:
-            if exit: err(3, f'{self.input} is not a valid params.', self.input)
+            if exit: err(3, f'{self.input_text} is not a valid params.', self.input_text)
             else: return False
     
     def isValidValue(self, exit=True):
-        if self._isInt(self.input) or self._isStr(self.input) or self._isFloat(self.input)or self._isParam(self.input): return True
+        if self._isInt(self.input_text) or self._isStr(self.input_text) or self._isFloat(self.input_text)or self._isParam(self.input_text): return True
         else:
-            if exit: err(3, f'{self.input} is not a valid value.', self.input)
+            if exit: err(3, f'{self.input_text} is not a valid value.', self.input_text)
             else: return False
 
     def isExistsParam(self, exit=True):
-        if self.input[0] == '$' and self.input[1:] in params: return True
+        if self.input_text[0] == '$' and self.input_text[1:] in params: return True
         else:
-            if exit: err(1, f'Param {self.input} has not been defined.')
+            if exit: err(1, f'Param {self.input_text} has not been defined.')
             else: return False
 
     def isExistsLabel(self, exit=True):
-        if "L_" + str(self.input) in params: return True
+        if "L_" + str(self.input_text) in params: return True
         else:
-            if exit: err(1, f'Label {self.input} has not been defined.', self.input)
+            if exit: err(1, f'Label {self.input_text} has not been defined.', self.input_text)
             else: return False
 
     def getType(self, exit=True, pure=False):
-        if self._isInt(self.input): return 'int'
-        if self._isStr(self.input): return 'str'
-        if self._isFloat(self.input): return 'float'
-        if self._isArr(self.input): return 'arr'
-        if self._isParam(self.input): return ('' if pure else 'p_') + params[self.input[1:]]['type']
+        if self._isInt(self.input_text): return 'int'
+        if self._isStr(self.input_text): return 'str'
+        if self._isFloat(self.input_text): return 'float'
+        if self._isArr(self.input_text): return 'arr'
+        if self._isParam(self.input_text): return ('' if pure else 'p_') + params[self.input_text[1:]]['type']
         else:
-            if exit: err(3, f'{self.input} has invald type.')
+            if exit: err(3, f'{self.input_text} has invald type.')
             else: return False
 
-    def _isInt(self, input, exit=False):
+    def _isInt(self, input_text, exit=False):
         try:
-            int(input)
+            int(input_text)
         except:
-            if exit: err(3, f'{input} is not an integer.')
+            if exit: err(3, f'{input_text} is not an integer.')
             else: return False
         return True
 
-    def _isFloat(self, input, exit=False):
+    def _isFloat(self, input_text, exit=False):
         try:
-            float(input)
+            float(input_text)
         except:
-            if exit: err(3, f'{input} is not a float.')
+            if exit: err(3, f'{input_text} is not a float.')
             else: return False
         return True
     
-    def _isStr(self, input: str, exit=False):
-        if input.count('\'') == 2 and input[0] == '\'' and input[-1] == '\'': return True
+    def _isStr(self, input_text: str, exit=False):
+        if input_text.count('\'') == 2 and input_text[0] == '\'' and input_text[-1] == '\'': return True
         else:
-            if exit: err(3, f'{input} is not a string.')
+            if exit: err(3, f'{input_text} is not a string.')
             else: return False
     
-    def _isArr(self, input: str, exit=False):
-        if type(input) is list: return True
+    def _isArr(self, input_text: str, exit=False):
+        if type(input_text) is list: return True
         else:
-            if exit: err(3, f'{input} is not a array.')
+            if exit: err(3, f'{input_text} is not a array.')
             else: return False
 
-    def _isParam(self, input, exit=False):
-        if input[0] == '$' and self.isExistsParam(self.input): return True
+    def _isParam(self, input_text, exit=False):
+        if input_text[0] == '$' and self.isExistsParam(self.input_text): return True
         else:
-            if exit: err(3, f'{self.input} is not a param.')
+            if exit: err(3, f'{self.input_text} is not a param.')
             else: return False
 
-    def _isLabel(self, input, exit=False):
-        if input[0] == '$' and self.isExistsLabel(self.input): return True
+    def _isLabel(self, input_text, exit=False):
+        if input_text[0] == '$' and self.isExistsLabel(self.input_text): return True
         else:
-            if exit: err(3, f'{self.input} is not a label.')
+            if exit: err(3, f'{self.input_text} is not a label.')
             else: return False
 
 class Operation:
@@ -392,12 +392,40 @@ class Operation:
         elif chk1_type == 'str': print(par1[1:-1])
         elif chk1_type in ['int', 'float']: print(par1)
         else: err(3, f'{par1} is not a valid value.')
+    
+    def ipt(self):
+        par1 = self.content[0]
+        chk1 = Checker(par1)
+
+        chk1.isValidParam(exit=True)
+        par2 = input()
+        chk2 = Checker(par2)
+
+        chk1.isValidParam()
+        chk2.isValidValue()
+
+        val = ''
+        chk2_type = chk2.getType()
+        match chk2_type:
+            case 'str': val = par2[1:-1]
+            case 'int': val = int(par2)
+            case 'float': val = float(par2)
+            case 'arr': val = par2
+            case 'p_str': val = str(params[par2[1:]]['val'])
+            case 'p_int': val = int(params[par2[1:]]['val'])
+            case 'p_float': val = float(params[par2[1:]]['val'])
+            case 'p_arr': val = params[par2[1:]]['val']
+
+        params[par1[1:]] = {
+            'type': chk2_type.replace('p_', ''),
+            'val': val
+        }
 
 def err(code: int, msg: str, error='') -> None:
     global current_line, file
 
     codes = {
-        0: "Input Error",
+        0: "input_text Error",
         1: "Undefined",
         2: "Syntax Error",
         3: "Type Error",
@@ -415,12 +443,12 @@ def err(code: int, msg: str, error='') -> None:
           \n{codes[code]}: {msg}')
     exit()
 
-def main(input: str) -> None:
+def main(input_text: str) -> None:
     global counter, current_line
     lines = {}
 
     # Preprocessing
-    for x, y in enumerate(open(input)):
+    for x, y in enumerate(open(input_text)):
         y = y.replace('\n', '')
         comments = y.find('#')
         if comments != -1: y = y[:comments]
@@ -478,17 +506,18 @@ def main(input: str) -> None:
             case 'JLE': opIns.jle()
             case 'LAB': opIns.lab()
             case 'MSG': opIns.msg()
+            case 'IPT': opIns.ipt()
             case 'END': exit()
         
         counter += 1
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print('Input Error: Input file not specified.')
+        print('input_text Error: input_text file not specified.')
         exit()
 
-    input = sys.argv[1]
-    if not os.path.isfile(input): err(0, 'Input file not exists.')
+    input_text = sys.argv[1]
+    if not os.path.isfile(input_text): err(0, 'input_text file not exists.')
 
-    file = input
-    main(input)
+    file = input_text
+    main(input_text)
