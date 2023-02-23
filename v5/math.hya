@@ -1,0 +1,55 @@
+INT $a 0
+LDA -100
+STA $a
+INT $b 0
+LDA 2
+STA $b
+INT $c 0
+LDA 10
+STA $c
+LDA $a
+CALL abs
+MSG _
+INT $p 0
+LDA $b
+LDA $c
+CALL pow
+STA $p
+LDA $p
+MSG _
+SSKP
+:abs
+INT $a _
+LDA $a
+LDA 0
+LST _ _
+LNT _ 
+JMP _ UVFYLUFOIFIJDYYC
+LDA -1
+LDA $a
+MUL _ _
+RET
+LABEL JTAKILVUDWBTJFSJ
+LABEL UVFYLUFOIFIJDYYC
+LDA $a
+RET
+ESKP
+SSKP
+:pow
+INT $a _
+INT $b _
+LDA $b
+LDA $a
+EXP _ _
+RET
+ESKP
+SSKP
+:round
+FLOAT $a _
+LDA $a
+LDA $a
+LDA 1
+REM _ _
+SUB _ _
+RET
+ESKP

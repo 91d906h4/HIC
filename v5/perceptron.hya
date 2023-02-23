@@ -1,0 +1,60 @@
+FLOAT $threshold 0.0
+LDA 1.5
+STA $threshold
+LDA 5
+INTA $inputs _
+LDA 1
+LDA 0
+LDA 1
+LDA 0
+LDA 1
+STAA $inputs 0
+STAA $inputs 1
+STAA $inputs 2
+STAA $inputs 3
+STAA $inputs 4
+LDA 5
+FLOATA $weights _
+LDA 0.4
+LDA 0.3
+LDA 0.5
+LDA 0.6
+LDA 0.7
+STAA $weights 0
+STAA $weights 1
+STAA $weights 2
+STAA $weights 3
+STAA $weights 4
+FLOAT $sum 0.0
+LDA 0.0
+STA $sum
+INT $i 0
+LDA 0
+STA $i
+LABEL CWFPTFHBYNQNEJSG
+LDA $i
+LDA 5
+LST _ _
+LNT _ 
+JMP _ RDXPVPBOLYQQTETZ
+LDA $sum
+LDA $i
+LDAA $inputs _
+LDA $i
+LDAA $weights _
+MUL _ _
+ADD _ _
+STA $sum
+LDA $i
+LDA 1
+ADD _ _
+STA $i
+JMP 1 CWFPTFHBYNQNEJSG
+LABEL RDXPVPBOLYQQTETZ
+BOOL $activate false
+LDA $sum
+LDA 1.5
+GRT _ _
+STA $activate
+LDA $activate
+MSG _

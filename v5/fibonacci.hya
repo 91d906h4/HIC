@@ -1,0 +1,73 @@
+SSKP
+:fib
+INT $n _
+LDA $n
+LDA 1
+LTE _ _
+LNT _ 
+JMP _ ITEDUWVUIKQGXVYC
+LDA $n
+RET
+LABEL MZVVVYANEVBAFWKB
+LABEL ITEDUWVUIKQGXVYC
+LDA $n
+LDA 1
+SUB _ _
+CALL fib
+LDA $n
+LDA 2
+SUB _ _
+CALL fib
+ADD _ _
+RET
+ESKP
+LDA 10
+CALL fib
+MSG _
+SSKP
+:fib
+INT $n _
+LDA $n
+INTA $temp _
+INT $a 0
+LDA 1
+LDA 0
+STAA $temp _
+LDA 1
+LDA 1
+STAA $temp _
+INT $i 0
+LDA 2
+STA $i
+LABEL DXJBKZWHNCSLWOVU
+LDA $i
+LDA $n
+LST _ _
+LNT _ 
+JMP _ LZIGNCEUBLLIDSCR
+LDA $i
+LDA 1
+SUB _ _
+LDAA $temp _
+LDA $i
+LDA 2
+SUB _ _
+LDAA $temp _
+ADD _ _
+STA $a
+LDA $a
+LDA $i
+STAA $temp _
+LDA $i
+LDA 1
+ADD _ _
+STA $i
+JMP 1 DXJBKZWHNCSLWOVU
+LABEL LZIGNCEUBLLIDSCR
+LDA -1
+LDAA $temp _
+RET
+ESKP
+LDA 10
+CALL fib
+MSG _

@@ -1,0 +1,18 @@
+/*
+    Standard HyLang Math Module
+*/
+
+function abs(int a){
+    if(a < 0){
+        return -1 * a;
+    }
+    return a;
+}
+
+function pow(int a, int b){
+    return b ** a;
+}
+
+function round(float a){
+    return (a - a % 1);
+}
