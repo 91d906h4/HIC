@@ -1,3 +1,3 @@
 # HIC
 
-A small assembler.
+A small compiler.
