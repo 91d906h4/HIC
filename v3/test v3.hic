@@ -7,57 +7,57 @@ ARR $arr 1, 2, 3, 'a', $d
 MSG 120
 MSG $a
 VAL $a 10
-JEQ $a 5 WPMUGESHES
+JEQ $a 5 LSCPHPLRIX
 MSG 'a is not 5!!!'
-LAB WPMUGESHES
+LAB LSCPHPLRIX
 VAL $a 10
-JLE 10 $a VELUMEELCE
+JLE 10 $a CNOQYPFVGU
 MSG 'a is less than 10!'
-LAB VELUMEELCE
-JLT $a 10 JZLSYAZPYV
+LAB CNOQYPFVGU
+JLT $a 10 KSZLLEUAQM
 MSG 'a is not less than 10!'
-LAB JZLSYAZPYV
+LAB KSZLLEUAQM
 MSG $a
-JNQ $a 21 RGKRZKJYAV
+JNQ $a 21 RLYOCUOSFY
 MSG 'a is 21!'
-LAB RGKRZKJYAV
+LAB RLYOCUOSFY
 VAL $a 0
-LAB YSTGLWOOJR
-VAL $vjordpbayt $a
-ADD $vjordpbayt 1
-VAL $a $vjordpbayt
-JLE $a 5 NDKEATMUQG
+LAB JGXNUKIAJP
+VAL $anwkxfbrhr $a
+ADD $anwkxfbrhr 1
+VAL $a $anwkxfbrhr
+JLE $a 5 COMMHVKDBW
 MSG $a
-LAB NDKEATMUQG
-JLT 5 $a AGFLXUMWQZ
+LAB COMMHVKDBW
+JLT 5 $a HQTZAKPQKK
 MSG 'a is less than 5'
-LAB AGFLXUMWQZ
+LAB HQTZAKPQKK
 VAL $b 1
 None
-JLE $a 10 YSTGLWOOJR
+JLE $a 10 JGXNUKIAJP
 VAL $a 10
-JNQ $a 10 KJRSZGPSAK
+JNQ $a 10 AJVZQXGBAD
 MSG 'acd'
-LAB KJRSZGPSAK
-JEQ $a 10 LUSILBSOWH
+LAB AJVZQXGBAD
+JEQ $a 10 DRMRTVPMCB
 MSG 'bcd'
-LAB LUSILBSOWH
+LAB DRMRTVPMCB
 VAL $a 1
-LAB HROVEFSHSR
-VAL $sskgjwfjsh $a
-MUL $sskgjwfjsh 2
-VAL $a $sskgjwfjsh
+LAB LRPUTEARQY
+VAL $ihxxxocctc $a
+MUL $ihxxxocctc 2
+VAL $a $ihxxxocctc
 MSG $a
-JLT $a 10 HROVEFSHSR
+JLT $a 10 LRPUTEARQY
 VAL $a 0
 MSG $a
-VAL $spyoferjqu 1
-ADD $spyoferjqu 2
-VAL $a $spyoferjqu
+VAL $lvsofzepza 1
+ADD $lvsofzepza 2
+VAL $a $lvsofzepza
 MSG $a
-VAL $nuabjykahg 1
-ADD $nuabjykahg $a
-VAL $a $nuabjykahg
+VAL $ykrdneeypu 1
+ADD $ykrdneeypu $a
+VAL $a $ykrdneeypu
 MSG $a
 ADD $a 2
 MSG $a
@@ -70,12 +70,12 @@ IPT $name
 VAL $greeting 'Hi! '
 ADD $greeting $name
 VAL $counter 1
-LAB YMLSVCWKMT
-JNQ $counter 3 GDSENOGLMG
+LAB WMYYHZOMVE
+JNQ $counter 3 JJAYFYCIDB
 MSG 'YEAH'
-LAB GDSENOGLMG
-JEQ $counter 3 IIURAZBVCU
+LAB JJAYFYCIDB
+JEQ $counter 3 USBJLVAVUH
 MSG $greeting
-LAB IIURAZBVCU
+LAB USBJLVAVUH
 ADD $counter 1
-JLE $counter 5 YMLSVCWKMT
+JLE $counter 5 WMYYHZOMVE
