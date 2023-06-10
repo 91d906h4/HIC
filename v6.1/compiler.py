@@ -1,6 +1,8 @@
-from tokenizer import Tokenizer
+from lexer import Lexer
 
 raw = open("./test.hy").read()
 
 # Tokenize
-tokens = Tokenizer(raw).getTokens()
+tokens = Lexer(raw).getTokens()
+
+print(tokens)
