@@ -1,15 +1,15 @@
 #include <stdio.h>
 
+int pow(int a) {
+    return 0;
+}
+
 int main() {
-    int a[2][2][3] = {{{55, 55, 55}, {1, 1}}, {{2, 2, 2}, {3, 3, 3}}};
+    int a = 1;
+    int b = a + 1;
+    int c = b + a;
 
-    int b = a[1][1][1];
-
-    char aa[] = "qwe";
-
-    printf("%s", aa);
-
-    // printf("%d", b);
+    int d[2 + 5][3] = {1, 1};
 
     return 0;
 }

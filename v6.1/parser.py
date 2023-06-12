@@ -7,13 +7,20 @@ class Parser:
     def __init__(self, tokens: list) -> None:
         self.tokens = tokens
 
-        # _, t = self.expSolver(tokens, 0)
-        # print(t)
-        self.defSolver(tokens, 4)
+        # _, t = self.expSolver(tokens, 5)
+
+        # _, t = self.defSolver(tokens, 5)
+
+        _, t = self.defFunction(tokens, 6)
+
+        print(t)
     
     def isSymbol(self, token: str) -> bool:
-        keywords = ["if", "else", "elif", "for", "while", "break", "int", "float", "string", "bool"]
+        keywords = ["if", "else", "elif", "for", "while", "break", "int", "float", "string", "bool", "function", "true", "false", "and", "or", "not"]
         return re.match(r"[_a-zA-Z][_a-zA-Z0-9]*", token) and token not in keywords
+
+    def termSolver(self, tokens: list, index: int):
+        pass
 
     def expSolver(self, tokens: list, index: int):
         temp, isArray, isFunction = [], False, False
@@ -96,12 +103,53 @@ class Parser:
         params = []
         while tokens[index]["types"] == "LEFTBRACKET":
             index += 1
-            index, t = self.expSolver(tokens, index)
-            params.append(t)
+            if tokens[index]["types"] != "INTEGER": E.throw(2, 2, "Size of array must be an integer.")
+            params.append(int(tokens[index]["symbol"]))
+            index += 1
 
             if tokens[index]["types"] != "RIGHTBRACKET": E.throw(2, 2, "There must be a close bracket (]).", "Add a close bracket.")
             index += 1
 
-        if params: temp.append(params)
+        if tokens[index]["types"] == "ASSIGN": index += 1
+        elif tokens[index]["types"] == "SEMICOLON":
+            if params: temp.append(params)
+            return index, temp
 
-        print(temp)
+        if params:
+            temp.append(params)
+
+            # Anonymous array.
+            tokens.insert(index, {"types": "SYMBOL", "symbol": "anonymous"})
+            
+            index, t = self.expSolver(tokens, index)
+            temp.append(t[0][2])
+        else:
+            index, t = self.expSolver(tokens, index)
+            temp.append(t)
+
+        return index, temp
+
+    def defFunction(self, tokens: list, index: int):
+        temp = []
+
+        if tokens[index]["types"] != "DEF_FUNCTION":
+            E.throw(2, 2, "Definition must start with 'function'.")
+        else: temp.append(tokens[index]["types"])
+
+        index += 1
+
+        if tokens[index]["types"] != "SYMBOL": E.throw(2, 2, "Parameter must be a symbol.")
+        else: temp.append(tokens[index]["symbol"])
+
+        index += 1
+
+        params = []
+        while tokens[index]["types"] != "RIGHTPAREN":
+            index += 1
+            if tokens[index]["types"] == "SYMBOL": params.append(tokens[index]["symbol"])
+
+        temp.append(params)
+
+        print(tokens)
+
+        return index, temp

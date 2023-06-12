@@ -4,6 +4,7 @@ class Error:
         Error Types:\n
         (1) Unexpected Symbol Error\n
         (2) Syntax Error\n
+        (3) Type Error\n
         (99) Unexpected Error Type\n
 
         States:\n
@@ -16,6 +17,7 @@ class Error:
         errorTypes = {
             1: "Unexpected Symbol Error",
             2: "Syntax Error",
+            3: "Type Error",
             99: "Unexpected Error Type"
         }
         errorStage = {

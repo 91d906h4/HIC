@@ -16,6 +16,8 @@ DEF_INTEGER = "DEF_INTEGER"
 DEF_FLOAT = "DEF_FLOAT"
 DEF_STRING = "DEF_STRING"
 DEF_BOOL = "DEF_BOOL"
+DEF_FUNCTION = "DEF_FUNCTION"
+
 IF = "IF"
 ELSE = "ELSE"
 ELIF = "ELIF"
@@ -114,7 +116,7 @@ class Lexer:
                 case 38: self.status38()
                 case 39: self.status39()
                 case _: self.status0()
-        
+
         return self.tokenList
 
     def makeToken(self, types: str) -> None:
@@ -259,6 +261,7 @@ class Lexer:
                 case "float": self.makeToken(DEF_FLOAT)
                 case "string": self.makeToken(DEF_STRING)
                 case "bool": self.makeToken(DEF_BOOL)
+                case "function": self.makeToken(DEF_FUNCTION)
                 case "if": self.makeToken(IF)
                 case "else": self.makeToken(ELSE)
                 case "elif": self.makeToken(ELIF)
