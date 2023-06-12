@@ -46,7 +46,9 @@ func(8 - 9, 8 + a[10][3], 123) + a[2][5] + (5) + [1, 2, 3];
 
 // int a[2][2] = [[0, 1], [2, 3]];
 
-// int a;
+// int a;\
+
+int a;
 
 function asd(int a, int b) {
     print(a + b);
@@ -60,4 +62,8 @@ function asd(int a, int b) {
         print(i ** 5);
         return 0;
     }
+}
+
+if (a == 2) {
+    print(a);
 }

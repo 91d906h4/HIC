@@ -11,7 +11,7 @@ class Parser:
 
         # _, t = self.defSolver(tokens, 5)
 
-        _, t = self.functionSolver(tokens, 6)
+        self.termSolver(tokens, 0)
     
     def isSymbol(self, token: str) -> bool:
         keywords = ["if", "else", "elif", "for", "while", "break", "int", "float", "string", "bool", "function", "true", "false", "and", "or", "not"]
@@ -19,20 +19,28 @@ class Parser:
 
     def termSolver(self, tokens: list, index: int):
         while index < len(tokens):
-            if tokens[index]["types"] == "RIGHTBRACE":
+            if tokens[index]["types"] == "COMMENT":
+                index += 1
+                continue
+
+            elif tokens[index]["types"] == "RIGHTBRACE":
                 break
 
             elif tokens[index]["types"] == "DEF_FUNCTION":
                 index, t = self.functionSolver(tokens, index)
-                print(t)
+                print("1", t)
 
             elif tokens[index]["types"] in ["DEF_INTEGER", "DEF_FLOAT", "DEF_STRING", "DEF_BOOL"]:
                 index, t = self.defSolver(tokens, index)
-                print(t)
+                print("2", t)
+
+            elif tokens[index]["types"] == "IF":
+                index, t = self.ifSolver(tokens, index)
+                print("3", t)
 
             else:
                 index, t = self.expSolver(tokens, index)
-                print(t)
+                print("4", t)
 
             index += 1
         
@@ -82,8 +90,7 @@ class Parser:
 
                 else: temp.append(t)
 
-            elif tokens[index]["types"] == "RIGHTPAREN":
-                break
+            elif tokens[index]["types"] == "RIGHTPAREN": break
 
             elif tokens[index]["types"] == "LEFTBRACKET":
                 index, t = self.expSolver(tokens, index + 1)
@@ -94,8 +101,7 @@ class Parser:
 
                 else: temp.append(t)
 
-            elif tokens[index]["types"] == "RIGHTBRACKET":
-                break
+            elif tokens[index]["types"] == "RIGHTBRACKET": break
 
             index += 1
 
@@ -165,6 +171,23 @@ class Parser:
             if tokens[index]["types"] == "SYMBOL": params.append(tokens[index]["symbol"])
 
         temp.append(params)
+
+        index += 2
+
+        index = self.termSolver(tokens, index)
+
+        return index, temp
+    
+    def ifSolver(self, tokens: list, index: int):
+        temp = []
+        index += 1
+
+        if tokens[index]["types"] != "LEFTPAREN":
+            E.throw(2, 2, "There must be a open paren after 'if'.", "Use syntax 'if (...) \{\}.'")
+
+        index += 1
+
+        index, temp = self.expSolver(tokens, index)
 
         index += 2
 
