@@ -11,16 +11,32 @@ class Parser:
 
         # _, t = self.defSolver(tokens, 5)
 
-        _, t = self.defFunction(tokens, 6)
-
-        print(t)
+        _, t = self.functionSolver(tokens, 6)
     
     def isSymbol(self, token: str) -> bool:
         keywords = ["if", "else", "elif", "for", "while", "break", "int", "float", "string", "bool", "function", "true", "false", "and", "or", "not"]
         return re.match(r"[_a-zA-Z][_a-zA-Z0-9]*", token) and token not in keywords
 
     def termSolver(self, tokens: list, index: int):
-        pass
+        while index < len(tokens):
+            if tokens[index]["types"] == "RIGHTBRACE":
+                break
+
+            elif tokens[index]["types"] == "DEF_FUNCTION":
+                index, t = self.functionSolver(tokens, index)
+                print(t)
+
+            elif tokens[index]["types"] in ["DEF_INTEGER", "DEF_FLOAT", "DEF_STRING", "DEF_BOOL"]:
+                index, t = self.defSolver(tokens, index)
+                print(t)
+
+            else:
+                index, t = self.expSolver(tokens, index)
+                print(t)
+
+            index += 1
+        
+        return index
 
     def expSolver(self, tokens: list, index: int):
         temp, isArray, isFunction = [], False, False
@@ -129,7 +145,7 @@ class Parser:
 
         return index, temp
 
-    def defFunction(self, tokens: list, index: int):
+    def functionSolver(self, tokens: list, index: int):
         temp = []
 
         if tokens[index]["types"] != "DEF_FUNCTION":
@@ -150,6 +166,8 @@ class Parser:
 
         temp.append(params)
 
-        print(tokens)
+        index += 2
+
+        index = self.termSolver(tokens, index)
 
         return index, temp

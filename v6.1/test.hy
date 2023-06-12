@@ -49,5 +49,15 @@ func(8 - 9, 8 + a[10][3], 123) + a[2][5] + (5) + [1, 2, 3];
 // int a;
 
 function asd(int a, int b) {
-    return 0;
+    print(a + b);
+    int u = 123;
+    string array[2][3] = [
+        [1, 2, 3],
+        [4, 5, 6 + 5 * a[3]]
+    ];
+
+    function internal(int i){
+        print(i ** 5);
+        return 0;
+    }
 }
