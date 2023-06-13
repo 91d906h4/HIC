@@ -1,7 +1,7 @@
 from lexer import Lexer
 from parser import Parser
 
-raw = open("./test.hy").read()
+raw = open("./test/test.hy").read()
 
 # Tokenize
 tokens = Lexer(raw).getTokens()

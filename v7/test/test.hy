@@ -25,6 +25,9 @@ factor:
 
 for (int i = 0; i < 10; i++) {
     print(i and true);
+    for (int i = 0; i < 10; i++) {
+        print(i and true);
+    }
 }
 
 int aa[2] = [
@@ -66,4 +69,34 @@ function asd(int a, int b) {
 
 if (a == 2) {
     print(a);
+}
+elif (b == 2) {
+    print(b);
+}
+else {
+    print(c);
+}
+
+float a;
+int a;
+
+if (a == 2) {
+    print(a);
+}
+elif (b == 2) {
+    print(b);
+    {
+        {
+            print(123);
+        }
+    }
+}
+
+int a;
+
+for (int i = 0; i < 10; i++) {
+    print(i);
+    while (a == true) {
+        print(a);
+    }
 }
