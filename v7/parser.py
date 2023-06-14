@@ -249,6 +249,7 @@ class Parser:
 
         index += 2
 
+        # Get the condition part of while-loop.
         index, t = self.expSolver(index)
 
         index += 2
