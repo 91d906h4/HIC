@@ -1,12 +1,13 @@
-from lexer import Lexer
-from parser import Parser
+from hLexer import Lexer
+from hParser import Parser
+from hGenerator import Generator
 
-raw = open("./test/test.hy").read()
+raw = open("./test/def_test.hy").read()
 
-# Tokenize
+# Lexer
 tokens = Lexer(raw).getTokens()
 
-# for i in tokens:
-#     print(i)
+# Parser
+Parser(tokens)
 
-parse = Parser(tokens)
+# Code Generator

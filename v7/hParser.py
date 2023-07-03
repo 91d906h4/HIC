@@ -7,11 +7,12 @@ class Parser:
     def __init__(self, tokens: list) -> None:
         self.tokens = tokens
 
-        _ = self.termSolver(0)
-    
+        # Call Term Solver.
+        self.termSolver(0)
+
     def isSymbol(self, token: str) -> bool:
         keywords = ["if", "else", "elif", "for", "while", "break", "int", "float", "string", "bool", "function", "true", "false", "and", "or", "not"]
-        return re.match(r"[_a-zA-Z][_a-zA-Z0-9]*", token) and token not in keywords
+        return re.match(r"[_a-zA-Z][_a-zA-Z0-9]*", str(token)) and token not in keywords
 
     def termSolver(self, index: int):
         while index < len(self.tokens):
@@ -108,6 +109,7 @@ class Parser:
 
             elif self.tokens[index]["types"] == "RIGHTBRACKET": break
 
+            # Get token '}'.
             index += 1
 
         return index, temp
@@ -122,66 +124,83 @@ class Parser:
             E.throw(2, 2, "Definition must start with 'int', 'float', 'string', or 'bool'.")
         else: temp.append(self.tokens[index]["types"])
 
+        # Get token '<definition (int, float, string, or bool)>'.
         index += 1
 
-        # Check if the parameter name is legal (a symbol).
-        if self.tokens[index]["types"] != "SYMBOL": E.throw(2, 2, "Parameter must be a symbol.")
-        else: temp.append(self.tokens[index]["symbol"])
+        while self.tokens[index]["types"] != "SEMICOLON":
+            print(self.tokens[index])
+            # Check if the parameter name is legal (a symbol).
+            if self.tokens[index]["types"] != "SYMBOL": E.throw(2, 2, "Parameter must be a symbol.")
+            else: temp.append(self.tokens[index]["symbol"])
 
-        index += 1
-
-        # Check if an array.
-        params = []
-        while self.tokens[index]["types"] == "LEFTBRACKET":
-            index += 1
-            if self.tokens[index]["types"] != "INTEGER": E.throw(2, 2, "Size of array must be an integer.")
-            params.append(int(self.tokens[index]["symbol"]))
+            # Get token '='.
             index += 1
 
-            if self.tokens[index]["types"] != "RIGHTBRACKET": E.throw(2, 2, "There must be a close bracket (]).", "Add a close bracket.")
-            index += 1
+            # Check if an array.
+            params = []
+            if self.tokens[index]["types"] == "LEFTBRACKET": temp.insert(1, "DEF_ARRAY")
 
-        # Check if any value given.
-        if self.tokens[index]["types"] == "ASSIGN": index += 1
-        elif self.tokens[index]["types"] == "SEMICOLON":
-            if params: temp.append(params)
-            return index, temp
+            while self.tokens[index]["types"] == "LEFTBRACKET":
+                index += 1
+                if self.tokens[index]["types"] != "INTEGER": E.throw(2, 2, "Size of array must be an integer.")
+                params.append(int(self.tokens[index]["symbol"]))
+                index += 1
 
-        # Check if an array. If the 'params' is not empty, it means it is an array.
-        if params:
-            temp.append(params)
+                if self.tokens[index]["types"] != "RIGHTBRACKET": E.throw(2, 2, "There must be a close bracket (]).", "Add a close bracket.")
+                index += 1
 
-            # Anonymous array.
-            # To define an array, we re-use the expSolver to parse the value,
-            # but the expSolver require a name before an array, so we give it
-            # an 'anonymous' array name.
-            self.tokens.insert(index, {"types": "SYMBOL", "symbol": "anonymous"})
-            
-            index, t = self.expSolver(index)
-            temp.append(t[0][2])
-        else:
-            index, t = self.expSolver(index)
-            temp.append(t)
+            # Check if any value given.
+            if self.tokens[index]["types"] == "ASSIGN": index += 1
+            elif self.tokens[index]["types"] == "SEMICOLON":
+                if params: temp.append(params)
+                return index, temp
+
+            # Check if an array. If the 'params' is not empty, it means it is an array.
+            if params:
+                temp.append(params)
+
+                # Anonymous array.
+                # To define an array, we re-use the expSolver to parse the value,
+                # but the expSolver require a name before an array, so we give it
+                # an 'anonymous' array name.
+                self.tokens.insert(index, {"types": "SYMBOL", "symbol": "anonymous"})
+                
+                index, t = self.expSolver(index)
+                temp.append(t[0][2])
+            else:
+                index, t = self.expSolver(index)
+                temp.append(t)
+
+        print(temp)
 
         return index, temp
 
     def functionSolver(self, index: int):
         temp = []
 
+        temp.append(self.tokens[index]["types"])
+
+        # Get token '<function name>'.
         index += 1
 
         if self.tokens[index]["types"] != "SYMBOL": E.throw(2, 2, "Parameter must be a symbol.")
         else: temp.append(self.tokens[index]["symbol"])
 
+        # Get token '('.
         index += 1
 
         params = []
         while self.tokens[index]["types"] != "RIGHTPAREN":
+            # Get token '<definition (int, float, string, or bool)>'.
             index += 1
-            if self.tokens[index]["types"] == "SYMBOL": params.append(self.tokens[index]["symbol"])
+
+            # Append parameters to list.
+            if self.tokens[index]["types"] == "SYMBOL":
+                params.append(self.tokens[index]["symbol"])
 
         temp.append(params)
 
+        # Get tokens '){'.
         index += 2
 
         index = self.termSolver(index)
@@ -191,27 +210,29 @@ class Parser:
     def ifSolver(self, index: int):
         temp = []
 
-        index += 1
-
-        # if self.tokens[index]["types"] != "LEFTPAREN":
-        #     E.throw(2, 2, "There must be a open paren after 'if'.", "Use syntax 'if (...) {...}.'")
-
-        index += 1
+        # Get tokens 'if('.
+        index += 2
 
         index, temp = self.expSolver(index)
+
+        # Get tokens '){'.
         index += 2
 
         index = self.termSolver(index)
         
         while self.tokens[index + 1]["types"] in ["ELSE", "ELIF"]:
             if self.tokens[index + 1]["types"] == "ELIF":
+                # Get tokens '}elif('.
                 index += 3
 
                 index, temp = self.expSolver(index)
+
+                # Get tokens '){'.
                 index += 2
 
                 index = self.termSolver(index)
             else:
+                # Get tokens '}else('.
                 index += 3
 
                 index = self.termSolver(index)
@@ -223,21 +244,25 @@ class Parser:
     def forSolver(self, index: int):
         temp = []
 
+        # Get tokens 'for('.
         index += 2
 
         # Get the first part (initialization) of for-loop.
         index, t = self.defSolver(index)
 
+        # Get token ';'.
         index += 1
 
         # Get the second part (condition) of for-loop.
         index, t = self.expSolver(index)
 
+        # Get token ';'.
         index += 1
 
         # Get the third part (increment/decrement) of for-loop.
         index, t = self.expSolver(index)
 
+        # Get tokens '){'.
         index += 2
 
         index = self.termSolver(index)
@@ -247,11 +272,13 @@ class Parser:
     def whileSolver(self, index: int):
         temp = []
 
+        # Get tokens 'while('.
         index += 2
 
         # Get the condition part of while-loop.
         index, t = self.expSolver(index)
 
+        # Get tokens '){'.
         index += 2
 
         index = self.termSolver(index)

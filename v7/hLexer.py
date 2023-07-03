@@ -1,5 +1,7 @@
 from errorHandler import Error
 
+E = Error()
+
 DIGITS_0_9 = "0123456789"
 DIGITS_1_9 = "123456789"
 CHAR_a_zA_Z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -56,8 +58,6 @@ LEFTBRACKET = "LEFTBRACKET"
 RIGHTBRACKET = "RIGHTBRACKET"
 LEFTBRACE = "LEFTBRACE"
 RIGHTBRACE = "RIGHTBRACE"
-
-E = Error()
 
 class Lexer:
     def __init__(self, raw) -> None:
