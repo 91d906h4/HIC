@@ -11,7 +11,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-nun-lang">About HyLang</a>
+      <a href="#about-hylang">About HyLang</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#versions">Versions</a></li>
@@ -302,6 +302,6 @@ CALL fib    ; Call the function fib.
 MSG _       ; Print the result.
 ```
 
-## Lisence
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
