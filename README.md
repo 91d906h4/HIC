@@ -18,7 +18,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#example">Example</a></li>
+    <li><a href="#examples">Examples</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
