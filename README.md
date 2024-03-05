@@ -1,11 +1,15 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/logo.png" alt="Logo" width="80" height="80">
-  <h3 align="center">HyLang</h3>
+  <h1 align="center">HyLang</h1>
 
   <p align="center">
   A turing complete tiny esoteric programming language.
   </p>
+
+  <img src="https://imgur.com/H5GzcDS.png" />
 </div>
+
+<br />
+<br />
 
 <details>
   <summary>Table of Contents</summary>
