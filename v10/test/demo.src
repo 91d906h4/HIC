@@ -1,0 +1,41 @@
+// Typeless variables
+var name = "Alice";
+var age = 25;
+var isStudent = true;
+// Logical operators
+if (age >= 18 && !isStudent) {
+    print("Adult, not a student");
+} else if (age >= 18 || isStudent) {
+    print("Either adult or student");
+}
+// Built-in functions
+var numbers[0];
+push(numbers, 10);
+push(numbers, 20);
+push(numbers, 30);
+print("Array length: " + str(len(numbers)));
+// Loop with break/continue
+var i = 0;
+while (i < len(numbers)) {
+    var val = numbers[i];
+    if (val == 20) {
+        i = i + 1;
+        continue;  // Skip 20
+    }
+    print(val);
+    i = i + 1;
+}
+for (var i = 0; i < len(numbers); i = i + 1) {
+    print(numbers[i]);
+}
+// Exception handling
+try {
+    var content = readfile("data.txt");
+    print(content);
+} catch {
+    print("File not found!");
+}
+// Type checking
+print("Type of name: " + typeof(name));
+print("Type of age: " + typeof(age));
+print("Type of isStudent: " + typeof(isStudent));

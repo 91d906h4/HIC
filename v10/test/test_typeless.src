@@ -1,0 +1,27 @@
+// Test typeless variables with var keyword
+var x;
+x = 10;
+print(x);
+
+var y = 20;
+print(y);
+
+// Test boolean literals
+var flag = true;
+print(flag);
+
+var flag2 = false;
+print(flag2);
+
+// Test none value
+var nothing = none;
+print(nothing);
+
+// Test type mixing
+var num = 42;
+var text = "Hello";
+var bool_val = true;
+
+print(num);
+print(text);
+print(bool_val);

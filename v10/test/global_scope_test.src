@@ -1,0 +1,10 @@
+var g = 10;
+
+function test() {
+    print("Inside test, g = " + str(g));
+    g = 20;
+}
+
+print("Before test, g = " + str(g));
+test();
+print("After test, g = " + str(g));

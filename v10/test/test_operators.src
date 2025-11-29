@@ -1,0 +1,55 @@
+// Test increment/decrement and compound assignment operators
+
+print("=== Increment/Decrement Operators ===");
+var count = 0;
+print("Initial count: " + str(count));
+
+count++;
+print("After count++: " + str(count));
+
+count++;
+count++;
+print("After 2 more ++: " + str(count));
+
+count--;
+print("After count--: " + str(count));
+
+print("");
+
+print("=== Compound Assignment Operators ===");
+var x = 10;
+print("Initial x: " + str(x));
+
+x += 5;
+print("After x += 5: " + str(x));
+
+x -= 3;
+print("After x -= 3: " + str(x));
+
+x *= 2;
+print("After x *= 2: " + str(x));
+
+x /= 4;
+print("After x /= 4: " + str(x));
+
+print("");
+
+print("=== Using in Loops ===");
+print("For loop with i++:");
+for (var i = 0; i < 5; i++) {
+    print("  i = " + str(i));
+}
+
+print("Countdown with i--:");
+for (var i = 5; i > 0; i--) {
+    print("  i = " + str(i));
+}
+
+print("");
+
+print("=== Combined Usage ===");
+var total = 0;
+for (var i = 1; i <= 10; i++) {
+    total += i;
+}
+print("Sum of 1 to 10: " + str(total));

@@ -1,0 +1,10 @@
+// Simplified test for Python module import
+
+import math;
+
+// Test basic function call
+var result = math.sqrt(16);
+print("sqrt(16) = " + str(result));
+
+// Test constant access
+print("Pi = " + str(math.pi));

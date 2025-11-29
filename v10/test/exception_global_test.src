@@ -1,0 +1,13 @@
+// Test to verify exception handling doesn't corrupt globals
+var globalVar = "I am global";
+print("Before try: globalVar = " + globalVar);
+
+try {
+    var localVar = "I am local";
+    throw "Error!";
+} catch {
+    print("Caught exception");
+}
+
+print("After try: globalVar = " + globalVar);
+print("Test passed!");

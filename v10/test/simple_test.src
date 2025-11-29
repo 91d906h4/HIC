@@ -1,0 +1,46 @@
+// Simple arithmetic test
+function add(var a, var b) {
+    return a + b;
+}
+
+function multiply(var a, var b) {
+    return a * b;
+}
+
+print("=== Simple Arithmetic Test ===");
+var x = 10;
+var y = 5;
+
+print("x = " + str(x));
+print("y = " + str(y));
+print("x + y = " + str(add(x, y)));
+print("x * y = " + str(multiply(x, y)));
+
+print("");
+print("=== Fibonacci Test ===");
+
+function fib(var n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+for (var i = 0; i <= 10; i++) {
+    print("fib(" + str(i) + ") = " + str(fib(i)));
+}
+
+print("");
+print("=== Array Test ===");
+var arr[0];
+push(arr, 10);
+push(arr, 20);
+push(arr, 30);
+
+print("Array length: " + str(len(arr)));
+print("arr[0] = " + str(arr[0]));
+print("arr[1] = " + str(arr[1]));
+print("arr[2] = " + str(arr[2]));
+
+print("");
+print("All tests passed!");

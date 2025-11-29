@@ -1,0 +1,33 @@
+// Test string literals
+print("Hello, World!");
+print('Single quotes work too!');
+
+// Test string concatenation
+print("Hello" + " " + "World");
+
+// Test string variables
+var s;
+s = "Test";
+print(s);
+
+// Test string concatenation with variables
+var greeting;
+greeting = "Hello";
+print(greeting + ", " + "World!");
+
+// Test string indexing
+var str1;
+str1 = "Hello";
+print(str1[0]);
+var str2;
+str2 = "World";
+print(str2[4]);
+
+// Test string comparison
+if ("abc" == "abc") {
+    print("Strings are equal!");
+}
+
+// Test escape sequences
+print("Line 1\nLine 2");
+print("Tab\there");

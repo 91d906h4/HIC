@@ -1,0 +1,33 @@
+// Test try/catch exception handling
+
+print("Test 1: Basic try/catch");
+try {
+    print("In try block");
+    throw "Something went wrong!";
+    print("This should not print");
+} catch {
+    print("Caught exception!");
+}
+
+print("Test 2: No exception");
+try {
+    print("No error here");
+} catch {
+    print("This should not print");
+}
+
+print("Test 3: Nested try/catch");
+try {
+    print("Outer try");
+    try {
+        print("Inner try");
+        throw "Inner error";
+    } catch {
+        print("Inner catch");
+    }
+    print("After inner try/catch");
+} catch {
+    print("Outer catch - should not reach");
+}
+
+print("All tests completed");

@@ -1,0 +1,32 @@
+print("Section 1");
+var age = 25;
+var isActive = true;
+print("age = " + str(age));
+print("isActive = " + str(isActive));
+print("");
+
+print("Section 2");
+var a = true;
+var b = false;
+print("a = " + str(a) + ", b = " + str(b));
+if (a && b) {
+    print("a && b = true");
+} else {
+    print("a && b = false");
+}
+if (a || b) {
+    print("a || b = true");
+} else {
+    print("a || b = false");
+}
+print("");
+
+print("Section 3");
+if (age >= 18 && isActive) {
+    print("Adult and Active");
+} else if (age >= 18) {
+    print("Adult but Inactive");
+} else {
+    print("Minor");
+}
+print("Done");

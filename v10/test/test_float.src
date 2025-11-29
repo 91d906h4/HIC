@@ -1,0 +1,13 @@
+// Test floating-point numbers
+
+var x = 3.14;
+print("x = " + str(x));
+
+var y = 2.5;
+print("y = " + str(y));
+
+var z = x + y;
+print("x + y = " + str(z));
+
+var result = 10.5 * 2;
+print("10.5 * 2 = " + str(result));

@@ -1,0 +1,36 @@
+// Simplified test for built-in functions
+
+// Test len()
+var str = "Hello";
+print(len(str));  // Should print 5
+
+// Test abs() with positive
+print(abs(5));    // Should print 5
+
+// Test abs() with variable
+var neg = 0 - 10;
+print(abs(neg));  // Should print 10
+
+// Test push() and pop()
+var list[0];
+push(list, 10);
+push(list, 20);
+push(list, 30);
+print(len(list));  // Should print 3
+print(pop(list));  // Should print 30
+print(len(list));  // Should print 2
+
+// Test int() and str()
+var num_str = "123";
+var num_val = int(num_str);
+print(num_val + 1);  // Should print 124
+
+var val = 456;
+var val_str = str(val);
+print(val_str);  // Should print "456"
+
+// Test typeof()
+print(typeof(10));        // Should print "int"
+print(typeof("hello"));   // Should print "string"
+print(typeof(true));      // Should print "bool"
+print(typeof(none));      // Should print "none"

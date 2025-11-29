@@ -1,0 +1,30 @@
+JMP L1
+L1:
+PUSH 0
+STORE 0
+STRING_NEW "I am global"
+STORE 0
+STRING_NEW "Before try: globalVar = "
+LOAD 0
+ADD
+PRINT
+TRY_BEGIN L2
+PUSH 0
+STORE 1
+STRING_NEW "I am local"
+STORE 1
+STRING_NEW "Error!"
+THROW
+TRY_END
+JMP L3
+L2:
+STRING_NEW "Caught exception"
+PRINT
+L3:
+STRING_NEW "After try: globalVar = "
+LOAD 0
+ADD
+PRINT
+STRING_NEW "Test passed!"
+PRINT
+HALT

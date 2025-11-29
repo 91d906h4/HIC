@@ -1,0 +1,19 @@
+/* This is a block comment
+   It can span multiple lines
+   And test that the lexer properly handles it */
+
+// This is a line comment
+
+var x = 10;  /* inline block comment */ print(x);
+
+/*
+ * Multi-line comment
+ * with asterisks
+ */
+var y = 20;
+print(y);
+
+/* Nested comments are not supported, but this should work */
+var z = 30;
+print(z);
+

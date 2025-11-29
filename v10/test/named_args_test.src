@@ -1,0 +1,26 @@
+// test/named_args_test.src
+
+// 1. HIC Function
+function greet(first, last) {
+    print("Hello " + first + " " + last);
+}
+
+print("1. HIC Function (Positional):");
+greet("John", "Doe");
+
+print("2. HIC Function (Named):");
+greet(last="Skywalker", first="Luke");
+
+print("3. HIC Function (Mixed):");
+greet("Han", last="Solo");
+
+// 4. Dynamic Call (Python)
+import torch;
+
+print("4. Python Function (Named):");
+// torch.tensor(data, dtype=None, device=None, requires_grad=False)
+var data = [1.0, 2.0, 3.0];
+var t = torch.tensor(data, dtype=torch.float32);
+print(t);
+
+print("Done");

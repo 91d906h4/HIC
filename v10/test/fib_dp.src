@@ -1,0 +1,17 @@
+function fib(int n){
+    int temp[20]; 
+    int a;
+
+    temp[0] = 1;
+    temp[1] = 1;
+
+    int i;
+    for(i = 2; i < n; i = i + 1){
+        a = temp[i - 1] + temp[i - 2];
+        temp[i] = a;
+    }
+
+    return temp[n - 1];
+}
+
+print(fib(10));

@@ -1,0 +1,19 @@
+// Comprehensive Python Module Import Test with Floats
+
+import math;
+import random;
+
+print("=== Math Module ===");
+print("sqrt(16) = " + str(math.sqrt(16)));
+print("sqrt(25) = " + str(math.sqrt(25)));
+print("pow(2, 10) = " + str(math.pow(2, 10)));
+print("Pi = " + str(math.pi));
+print("E = " + str(math.e));
+print("ceil(4.3) = " + str(math.ceil(4.3)));
+print("floor(4.7) = " + str(math.floor(4.7)));
+
+print("");
+print("=== Random Module ===");
+print("Random int 1-10: " + str(random.randint(1, 10)));
+print("Random int 1-100: " + str(random.randint(1, 100)));
+print("Random float: " + str(random.random()));

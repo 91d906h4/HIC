@@ -1,0 +1,6 @@
+// Test with numbers in function calls
+
+import math;
+
+var result = math.ceil(4.3);
+print(str(result));

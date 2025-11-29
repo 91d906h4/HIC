@@ -1,0 +1,17 @@
+print("=== Array Literal Test ===");
+
+var arr1 = [1, 2, 3];
+print("arr1: " + str(arr1));
+print("arr1[0]: " + str(arr1[0]));
+print("arr1[2]: " + str(arr1[2]));
+
+var arr2 = ["a", "b", "c"];
+print("arr2: " + str(arr2));
+
+var nested = [[1, 2], [3, 4]];
+print("nested[0][1]: " + str(nested[0][1]));
+
+var mixed = [1, "two", true, [10]];
+print("mixed: " + str(mixed));
+
+print("=== Done ===");

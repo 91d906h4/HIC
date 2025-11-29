@@ -1,0 +1,4 @@
+// Test importing custom Python script
+import ttt;
+
+ttt.ttt();

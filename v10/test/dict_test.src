@@ -1,0 +1,10 @@
+int d;
+d = {1: 10, 2: 20};
+print(d[1]);
+print(d[2]);
+d[1] = 100;
+print(d[1]);
+
+int arr[5];
+arr[0] = 50;
+print(arr[0]);

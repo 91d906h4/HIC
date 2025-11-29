@@ -1,0 +1,8 @@
+import torch;
+print("Start");
+var r = torch.nn.ReLU();
+print("ReLU created");
+var l = torch.nn.Linear(10, 10);
+print("Linear created");
+var s = torch.nn.Sequential(l, r);
+print("Sequential created");

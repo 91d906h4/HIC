@@ -1,0 +1,62 @@
+// ============================================
+// 10. EXCEPTION HANDLING
+// ============================================
+print("10. Exception Handling:");
+try {
+    var content = readfile("nonexistent.txt");
+    print("  File content: " + content);
+} catch {
+    print("  Caught error: File not found!");
+}
+
+try {
+    var result = 10;
+    if (result > 5) {
+        throw "Value too large!";
+    }
+} catch {
+    print("  Caught custom error!");
+}
+print("");
+
+
+// ============================================
+// 15. PYTORCH TRAINING
+// ============================================
+print("15. PyTorch:");
+import torch;
+
+var NUMBER_OF_DATA  = 64;
+var INPUT_FEATURES  = 1000;
+var HIDDEN_FEATURES = 100;
+var OUTPUT_FEATURES = 10;
+var x = torch.randn(NUMBER_OF_DATA, INPUT_FEATURES);
+var y = torch.randn(NUMBER_OF_DATA, OUTPUT_FEATURES);
+
+var model = torch.nn.Sequential(
+            torch.nn.Linear(INPUT_FEATURES, HIDDEN_FEATURES),
+            torch.nn.ReLU(),
+            torch.nn.Linear(HIDDEN_FEATURES, OUTPUT_FEATURES));
+var LEARNING_RATE = 0.03;
+var EPOCHS = 100;
+
+var criterion = torch.nn.MSELoss();
+var optimizer = torch.optim.SGD(
+    model.parameters(),
+    LEARNING_RATE);
+
+function train_step(train_X, train_y) {
+    model.train();
+    var pred_y = model(train_X);
+    optimizer.zero_grad();
+    var loss = criterion(pred_y, train_y);
+    loss.backward();
+    optimizer.step();
+    return loss.item();
+}
+
+for (var i = 0; i < EPOCHS; i++) {
+    var loss_result = train_step(x, y);
+    print(i, ": ", loss_result);
+}
+print("Finished Training");

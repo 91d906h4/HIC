@@ -1,0 +1,296 @@
+// ============================================
+// HIC Language - Complete Feature Demo
+// ============================================
+
+print("=== HIC Language Feature Showcase ===");
+print("");
+
+// ============================================
+// 1. TYPELESS VARIABLES
+// ============================================
+print("1. Typeless Variables:");
+var name = "Alice";
+var age = 25;
+var score = 95.5;
+var isActive = true;
+var data = none;
+print("  name = " + name);
+print("  age = " + str(age));
+print("  score = " + str(score));
+print("  isActive = " + str(isActive));
+print("  data = " + str(data));
+print("");
+
+// ============================================
+// 2. BOOLEAN LITERALS & LOGICAL OPERATORS
+// ============================================
+print("2. Boolean Literals & Logical Operators:");
+var a = true;
+var b = false;
+print("  a = " + str(a) + ", b = " + str(b));
+if (a && b) {
+    print("  a && b = true");
+} else {
+    print("  a && b = false");
+}
+if (a || b) {
+    print("  a || b = true");
+} else {
+    print("  a || b = false");
+}
+print("  !a = " + str(!a));
+print("");
+
+// ============================================
+// 3. CONTROL FLOW
+// ============================================
+print("3. Control Flow (if/else):");
+if (age >= 18 && isActive) {
+    print("  Status: Adult and Active");
+} else if (age >= 18) {
+    print("  Status: Adult but Inactive");
+} else {
+    print("  Status: Minor");
+}
+print("");
+
+// ============================================
+// 4. ARRAYS & BUILT-IN FUNCTIONS
+// ============================================
+print("4. Arrays & Built-in Functions:");
+var numbers[0];
+push(numbers, 10);
+push(numbers, 20);
+push(numbers, 30);
+push(numbers, 40);
+push(numbers, 50);
+print("  Array: " + str(numbers));
+print("  Length: " + str(len(numbers)));
+print("  First element: " + str(numbers[0]));
+print("  Last element: " + str(numbers[4]));
+var popped = pop(numbers);
+print("  Popped: " + str(popped));
+print("  New length: " + str(len(numbers)));
+print("");
+
+// ============================================
+// 5. LOOPS WITH BREAK & CONTINUE
+// ============================================
+print("5. Loops with break & continue:");
+print("  While loop (skip 20, break at 40):");
+var i = 0;
+while (i < len(numbers)) {
+    var val = numbers[i];
+    i++;
+    
+    if (val == 20) {
+        continue;  // Skip 20
+    }
+    if (val == 40) {
+        break;     // Stop at 40
+    }
+    print("    " + str(val));
+}
+
+print("  For loop (print 1-5):");
+for (var j = 1; j <= 5; j++) {
+    print("    " + str(j));
+}
+print("");
+
+// ============================================
+// 6. DICTIONARIES
+// ============================================
+print("6. Dictionaries:");
+var person = {"name": "Bob", "age": 30, "city": "NYC"};
+print("  person['name'] = " + person["name"]);
+print("  person['age'] = " + str(person["age"]));
+print("  person['city'] = " + person["city"]);
+person["age"] = 31;
+print("  Updated age: " + str(person["age"]));
+print("");
+
+// ============================================
+// 7. FUNCTIONS
+// ============================================
+print("7. Functions:");
+
+function fibonacci(var n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+function factorial(var n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+function pass_by_name(var a, var b) {
+    print("a = " + str(a));
+    print("b = " + str(b));
+}
+
+print("  fibonacci(10) = " + str(fibonacci(10)));
+print("  factorial(5) = " + str(factorial(5)));
+pass_by_name(b=2, a=1);
+print("");
+
+// ============================================
+// 8. STRING OPERATIONS
+// ============================================
+print("8. String Operations:");
+var greeting = "Hello";
+var target = "World";
+var message = greeting + " " + target + "!";
+print("  " + message);
+print("  Length: " + str(len(message)));
+print("  First char: " + message[0]);
+print("");
+
+// ============================================
+// 9. TYPE CHECKING
+// ============================================
+print("9. Type Checking:");
+print("  typeof(name) = " + typeof(name));
+print("  typeof(age) = " + typeof(age));
+print("  typeof(score) = " + typeof(score));
+print("  typeof(isActive) = " + typeof(isActive));
+print("  typeof(data) = " + typeof(data));
+print("  typeof(numbers) = " + typeof(numbers));
+print("");
+
+// ============================================
+// 10. EXCEPTION HANDLING
+// ============================================
+print("10. Exception Handling:");
+try {
+    var content = readfile("nonexistent.txt");
+    print("  File content: " + content);
+} catch {
+    print("  Caught error: File not found!");
+}
+
+try {
+    var result = 10;
+    if (result > 5) {
+        throw "Value too large!";
+    }
+} catch {
+    print("  Caught custom error!");
+}
+print("");
+
+// ============================================
+// 11. FLOATING-POINT NUMBERS
+// ============================================
+print("11. Floating-Point Numbers:");
+var pi = 3.14159;
+var radius = 5.0;
+var area = pi * radius * radius;
+print("  Pi = " + str(pi));
+print("  Radius = " + str(radius));
+print("  Area = " + str(area));
+print("");
+
+// ============================================
+// 12. PYTHON MODULE IMPORT
+// ============================================
+print("12. Python Module Import:");
+
+import time;
+import math;
+import random;
+
+print("  Math Module:");
+print("    sqrt(16) = " + str(math.sqrt(16)));
+print("    pow(2, 8) = " + str(math.pow(2, 8)));
+print("    sin(pi/2) = " + str(math.sin(math.pi / 2)));
+print("    ceil(4.3) = " + str(math.ceil(4.3)));
+print("    floor(4.7) = " + str(math.floor(4.7)));
+
+print("  Random Module:");
+print("    randint(1, 100) = " + str(random.randint(1, 100)));
+print("    random() = " + str(random.random()));
+print("");
+
+// time.sleep(2);
+
+// ============================================
+// 13. BUILT-IN CONVERSION FUNCTIONS
+// ============================================
+print("13. Built-in Conversion Functions:");
+var numStr = "42";
+var numInt = int(numStr);
+print("  int('42') = " + str(numInt));
+print("  str(123) = " + str(123));
+var negNum = 0 - 15;
+print("  abs(-15) = " + str(abs(negNum)));
+print("");
+
+// ============================================
+// 14. BLOCK COMMENTS
+// ============================================
+print("14. Block Comments:");
+/*
+   This is a multi-line comment.
+   It can span multiple lines.
+*/
+print("Done");
+
+// ============================================
+// 15. PYTORCH TRAINING
+// ============================================
+print("15. PyTorch:");
+import torch;
+
+var t_randn = torch.randn;
+var nn = torch.nn;
+var optim = torch.optim;
+
+var NUMBER_OF_DATA  = 64;
+var INPUT_FEATURES  = 1000;
+var HIDDEN_FEATURES = 100;
+var OUTPUT_FEATURES = 10;
+var x = t_randn(NUMBER_OF_DATA, INPUT_FEATURES);
+var y = t_randn(NUMBER_OF_DATA, OUTPUT_FEATURES);
+
+var model = nn.Sequential(
+            nn.Linear(INPUT_FEATURES, HIDDEN_FEATURES),
+            nn.ReLU(),
+            nn.Linear(HIDDEN_FEATURES, OUTPUT_FEATURES));
+var LEARNING_RATE = 0.03;
+var EPOCHS = 100;
+
+var criterion = nn.MSELoss();
+var optimizer = optim.SGD(
+    model.parameters(),
+    lr=LEARNING_RATE);
+
+function train_step(train_X, train_y) {
+    model.train();
+
+    var pred_y = model(train_X);
+
+    optimizer.zero_grad();
+    var loss = criterion(pred_y, train_y);
+
+    loss.backward();
+    optimizer.step();
+
+    return loss.item();
+}
+
+for (var i = 0; i < EPOCHS; i++) {
+    var loss_result = train_step(x, y);
+    print(str(i) + ": " + str(loss_result));
+}
+print("Finished Training");
+
+// ============================================
+// 16. DONE
+// ============================================
+print("Done");

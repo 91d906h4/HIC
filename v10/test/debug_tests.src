@@ -1,0 +1,11 @@
+import "fib_rec.src";
+
+print(100);
+int d;
+d = {1: 99};
+print(d[1]);
+d[1] = 88;
+print(d[1]);
+
+
+print(fib(10));
