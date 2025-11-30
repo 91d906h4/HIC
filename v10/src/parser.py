@@ -151,6 +151,16 @@ class StringLiteral(AST):
     def __init__(self, value):
         self.value = value
 
+
+class ClassDef(AST):
+    def __init__(self, name, methods):
+        self.name = name
+        self.methods = methods
+
+class ThisAccess(AST):
+    def __init__(self, attribute):
+        self.attribute = attribute
+
 class Parser:
     def __init__(self, lexer):
         self.lexer = lexer
@@ -213,6 +223,12 @@ class Parser:
                     elements.append(self.expr())
             self.eat(TokenType.RBRACKET)
             return ArrayLiteral(elements)
+        elif token.type == TokenType.KEYWORD and token.value == 'this':
+            self.eat(TokenType.KEYWORD)  # this
+            self.eat(TokenType.DOT)
+            attr = self.current_token.value
+            self.eat(TokenType.ID)
+            return ThisAccess(attr)
         elif token.type == TokenType.ID:
             return self.variable_or_call()
         elif token.type == TokenType.MINUS:
@@ -358,6 +374,18 @@ class Parser:
                 return self.try_catch_stmt()
             elif token.value == 'throw':
                 return self.throw_stmt()
+            elif token.value == 'this':
+                self.eat(TokenType.KEYWORD)  # this
+                self.eat(TokenType.DOT)
+                attr = self.current_token.value
+                self.eat(TokenType.ID)
+                if self.current_token.type == TokenType.ASSIGN:
+                    self.eat(TokenType.ASSIGN)
+                    right = self.expr()
+                    self.eat(TokenType.SEMICOLON)
+                    return Assign(ThisAccess(attr), right)
+                else:
+                    self.error('Expected assignment after this.attribute')
         elif token.type == TokenType.ID:
             # Parse the left-hand side (variable, array access, attribute access, or function call)
             expr = self.variable_or_call()
@@ -553,6 +581,19 @@ class Parser:
         self.eat(TokenType.RBRACE)
         return Block(statements)
 
+    def class_def(self):
+        self.eat(TokenType.KEYWORD)  # class
+        class_name = self.current_token.value
+        self.eat(TokenType.ID)
+        self.eat(TokenType.LBRACE)
+        
+        methods = []
+        while self.current_token.type == TokenType.KEYWORD and self.current_token.value == 'function':
+            methods.append(self.function_def())
+        
+        self.eat(TokenType.RBRACE)
+        return ClassDef(class_name, methods)
+
     def function_def(self):
         self.eat(TokenType.KEYWORD) # function
         name = self.current_token.value
@@ -584,6 +625,8 @@ class Parser:
         while self.current_token.type != TokenType.EOF:
             if self.current_token.type == TokenType.KEYWORD and self.current_token.value == 'function':
                 statements.append(self.function_def())
+            elif self.current_token.type == TokenType.KEYWORD and self.current_token.value == 'class':
+                statements.append(self.class_def())
             elif self.current_token.type == TokenType.KEYWORD and self.current_token.value == 'import':
                 statements.append(self.import_stmt())
             else:

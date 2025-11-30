@@ -1,0 +1,19 @@
+class Counter {
+    function constructor(start) {
+        this.count = start;
+        this.test = none;
+    }
+    
+    function increment() {
+        this.count = this.count + 1;
+    }
+    
+    function get() {
+        return this.count;
+    }
+}
+
+var c = Counter(10);
+c.increment();
+c.increment();
+print("Count: " + str(c.get()));

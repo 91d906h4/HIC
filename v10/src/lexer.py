@@ -157,6 +157,8 @@ class Lexer:
             'try': TokenType.KEYWORD,
             'catch': TokenType.KEYWORD,
             'throw': TokenType.KEYWORD,
+            'class': TokenType.KEYWORD,
+            'this': TokenType.KEYWORD,
         }
         
         token_type = keywords.get(result, TokenType.ID)

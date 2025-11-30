@@ -91,9 +91,9 @@ class CodeGen:
                 scan_globals(stmt.catch_body)
 
         for stmt in node.statements:
-            if not isinstance(stmt, parser.FunctionDef):
+            if not isinstance(stmt, parser.FunctionDef) and not isinstance(stmt, parser.ClassDef):
                 scan_globals(stmt)
-            else:
+            elif isinstance(stmt, parser.FunctionDef):
                 # Register function signature
                 param_names = [p[1] for p in stmt.params]
                 self.function_signatures[stmt.name] = param_names
@@ -101,8 +101,9 @@ class CodeGen:
         main_label = self.new_label()
         self.emit(f'JMP {main_label}')
         
+        # Emit functions and classes before main code
         for stmt in node.statements:
-            if isinstance(stmt, parser.FunctionDef):
+            if isinstance(stmt, parser.FunctionDef) or isinstance(stmt, parser.ClassDef):
                 self.generate(stmt)
         
         self.emit(f'{main_label}:')
@@ -117,7 +118,7 @@ class CodeGen:
         # The self.globals map tells us which names are globals.
         
         for stmt in node.statements:
-            if not isinstance(stmt, parser.FunctionDef):
+            if not isinstance(stmt, parser.FunctionDef) and not isinstance(stmt, parser.ClassDef):
                 self.generate(stmt)
         self.exit_scope()
         self.emit('HALT')
@@ -196,6 +197,13 @@ class CodeGen:
                 self.emit(f'STORE_GLOBAL {offset}')
             else:
                 self.emit(f'STORE {offset}')
+        elif isinstance(node.left, parser.ThisAccess):
+            # this.property = value
+            # LOAD_THIS, PUSH property_name, PUSH value, SET
+            self.emit('LOAD_THIS')
+            self.emit(f'STRING_NEW "{node.left.attribute}"')
+            self.generate(node.right)
+            self.emit('SET')
         elif isinstance(node.left, parser.ArrayAccess):
             # arr[i] = val
             # PUSH arr
@@ -379,6 +387,26 @@ class CodeGen:
     def visit_FunctionCall(self, node):
         builtins = ['print', 'len', 'abs', 'push', 'pop', 'input', 'readfile', 'writefile', 'int', 'str', 'typeof']
         void_builtins = ['print', 'push']  # Functions that don't return values
+        
+        # Check if this is a class instantiation
+        if hasattr(self, 'classes') and node.name in self.classes:
+            # Create new instance (dict)
+            self.emit('DICT_NEW')
+            self.emit('DUP')  # Keep instance on stack
+            
+            # Call constructor if it exists
+            class_info = self.classes[node.name]
+            if 'constructor' in class_info['methods']:
+                # Push instance as 'this'
+                self.emit('DUP')
+                # Generate constructor arguments
+                for arg in node.args:
+                    self.generate(arg)
+                # Call constructor
+                self.emit(f"CALL_CONSTRUCTOR {class_info['methods']['constructor']} {len(node.args)}")
+                self.emit('POP')  # Discard constructor return value
+            # Instance is left on stack
+            return
         
         # Check if this is a method call (has obj attribute)
         if node.obj is not None:
@@ -590,3 +618,38 @@ class CodeGen:
             self.emit(f'STORE_GLOBAL {offset}')
         else:
             self.emit(f'STORE {offset}')
+
+    def visit_ClassDef(self, node):
+        # Store class metadata
+        if not hasattr(self, 'classes'):
+            self.classes = {}
+        
+        method_labels = {}
+        for method in node.methods:
+            method_label = f"CLASS_{node.name}_{method.name}"
+            method_labels[method.name] = method_label
+            
+            self.emit(f'{method_label}:')
+            self.enter_scope()
+            
+            for param_type, param_name in method.params:
+                self.define_var(param_name)
+            
+            # method.body is a Block object, iterate over its statements
+            for stmt in method.body.statements:
+                self.generate(stmt)
+            
+            self.emit('PUSH 0')
+            num_params = len(method.params)
+            self.emit(f'RET {num_params}')
+            self.exit_scope()
+        
+        self.classes[node.name] = {
+            'methods': method_labels,
+            'constructor': method_labels.get('constructor')
+        }
+    
+    def visit_ThisAccess(self, node):
+        self.emit('LOAD_THIS')
+        self.emit(f'STRING_NEW "{node.attribute}"')
+        self.emit('GET')

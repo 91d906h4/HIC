@@ -24,6 +24,7 @@ class VM:
         self.current_exception = None
         self.modules = {}  # Registry for imported Python modules
         self.global_count = 0  # Number of global variables (to protect during stack unwinding)
+        self.this_stack = []  # Stack of current instances for methods
 
     def to_string(self, val):
         if isinstance(val, HeapPointer):
@@ -259,6 +260,8 @@ class VM:
                 self.fp = old_fp
                 self.ip = ret_addr
                 self.stack.append(ret_val)
+                if self.this_stack:
+                    self.this_stack.pop()
             elif op == 'PRINT':
                 val = self.stack.pop()
                 print(self.to_string(val))
@@ -449,6 +452,27 @@ class VM:
                 else:
                     print(f"Uncaught exception: {error_msg}")
                     sys.exit(1)
+            elif op == 'LOAD_THIS':
+                if not self.this_stack:
+                    raise RuntimeError("LOAD_THIS called outside of method context")
+                self.stack.append(self.this_stack[-1])
+            elif op == 'CALL_CONSTRUCTOR':
+                parts = arg.split()
+                label = parts[0]
+                num_args = int(parts[1])
+                args = []
+                for _ in range(num_args):
+                    args.insert(0, self.stack.pop())
+                instance = self.stack.pop()
+                self.this_stack.append(instance)
+                self.stack.append(self.ip)
+                self.stack.append(self.fp)
+                self.fp = len(self.stack)
+                for a in args:
+                    self.stack.append(a)
+                if label not in self.labels:
+                    raise RuntimeError(f"Constructor label '{label}' not found")
+                self.ip = self.labels[label]
             elif op == 'IMPORT_PYTHON':
                 # Import Python module (local file or installed package)
                 module_name = arg
@@ -505,6 +529,37 @@ class VM:
                 
                 # Pop object
                 obj = self.stack.pop()
+                
+                # Check if obj is a class instance (HeapPointer to dict)
+                if isinstance(obj, HeapPointer) and obj.ptr in self.heap:
+                    heap_obj = self.heap[obj.ptr]
+                    if isinstance(heap_obj, dict):
+                        # This is a class instance - find and call the method
+                        # Push instance onto this_stack
+                        self.this_stack.append(obj)
+                        
+                        # Find the method label
+                        method_found = False
+                        for label_name in self.labels:
+                            if label_name.endswith(f"_{method_name}"):
+                                # Push return address and frame pointer
+                                self.stack.append(self.ip)
+                                self.stack.append(self.fp)
+                                self.fp = len(self.stack)
+                                
+                                # Push arguments
+                                for a in args:
+                                    self.stack.append(a)
+                                
+                                # Jump to method
+                                self.ip = self.labels[label_name]
+                                method_found = True
+                                break
+                        
+                        if not method_found:
+                            print(f"Runtime Error: Method '{method_name}' not found on class instance")
+                            sys.exit(1)
+                        continue  # Skip the rest of CALL_METHOD handling
                 
                 # Check if obj is a module name
                 if isinstance(obj, str) and obj in self.modules:

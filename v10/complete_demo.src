@@ -81,7 +81,7 @@ print("  While loop (skip 20, break at 40):");
 var i = 0;
 while (i < len(numbers)) {
     var val = numbers[i];
-    i++;
+    i += 1;
     
     if (val == 20) {
         continue;  // Skip 20
@@ -291,6 +291,35 @@ for (var i = 0; i < EPOCHS; i++) {
 print("Finished Training");
 
 // ============================================
-// 16. DONE
+// 16. CLASS
+// ============================================
+print("16. Class:");
+
+class Counter {
+    function constructor(start) {
+        this.count = start;
+    }
+    
+    function increment() {
+        this.count = this.count + 1;
+    }
+
+    function decrement() {
+        this.count = this.count - 1;
+    }
+    
+    function get() {
+        return this.count;
+    }
+}
+
+var c = Counter(10);
+c.increment();
+c.increment();
+print("Count: " + str(c.get()));
+
+
+// ============================================
+// 17. DONE
 // ============================================
 print("Done");
