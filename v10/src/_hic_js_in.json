@@ -1,0 +1,1 @@
+{"data": [1, 2, 3], "code": "\n// Use functional JS methods\nvar sum = data.reduce((a, b) => a + b, 0);\ndata.push(sum);\n"}

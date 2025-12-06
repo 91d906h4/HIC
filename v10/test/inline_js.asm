@@ -1,0 +1,19 @@
+SYMBOL_TABLE {"data": 0, "code": 1}
+JMP L1
+L1:
+PUSH 0
+STORE_GLOBAL 0
+PUSH 1
+PUSH 2
+PUSH 3
+ARRAY_LITERAL 3
+STORE_GLOBAL 0
+PUSH 0
+STORE_GLOBAL 1
+STRING_NEW "\n// Use functional JS methods\nvar sum = data.reduce((a, b) => a + b, 0);\ndata.push(sum);\n"
+STORE_GLOBAL 1
+LOAD_GLOBAL 1
+EXEC_JAVASCRIPT
+LOAD_GLOBAL 0
+PRINT
+HALT

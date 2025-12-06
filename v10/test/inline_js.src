@@ -1,0 +1,9 @@
+var data = [1, 2, 3];
+var code = `
+// Use functional JS methods
+var sum = data.reduce((a, b) => a + b, 0);
+data.push(sum);
+`;
+
+_javascript_(code);
+print(data); // [1, 2, 3, 6]

@@ -1,0 +1,5 @@
+var code = `
+import math
+ans = math.cos(0)
+`;
+print(code);

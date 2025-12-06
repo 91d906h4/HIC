@@ -1,0 +1,1 @@
+{"value": 10, "js_code": "\nconsole.log(\"Inside Node.js:\");\nconsole.log(\"Original value: \" + value);\nvalue = value * 2;\nvar js_result = \"Hello from JS\";\n"}

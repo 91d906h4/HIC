@@ -473,6 +473,150 @@ class VM:
                 if label not in self.labels:
                     raise RuntimeError(f"Constructor label '{label}' not found")
                 self.ip = self.labels[label]
+            elif op == 'SYMBOL_TABLE':
+                # Parse symbol table: SYMBOL_TABLE {"name": index, ...}
+                import json
+                try:
+                    self.symbol_table = json.loads(arg)
+                    if not hasattr(self, 'python_env'):
+                        self.python_env = {}
+                except:
+                    print(f"Warning: Failed to parse symbol table: {arg}")
+            elif op == 'EXEC_PYTHON':
+                # Execute Python code string
+                code = self.stack.pop()
+                if not hasattr(self, 'symbol_table'):
+                    self.symbol_table = {}
+                if not hasattr(self, 'python_env'):
+                    self.python_env = {}
+                
+                # Sync HIC globals to Python env
+                # Safe globals from potential previous execution
+                for name, idx in self.symbol_table.items():
+                    if idx < len(self.stack) and idx < self.global_count: # Safety check
+                        val = self.stack[idx]
+                        self.python_env[name] = self.to_python(val)
+                
+                try:
+                    exec(code, self.python_env)
+                except Exception as e:
+                    print(f"Runtime Error in _python_: {e}")
+                    sys.exit(1)
+                
+                # Sync Python env back to HIC globals
+                for name, idx in self.symbol_table.items():
+                    if name in self.python_env:
+                        val = self.python_env[name]
+                        # Convert back to HIC type if possible?
+                        # For now, simplistic approach: directly store
+                        # Note: This might break if val is a complex Python object not wrapped in HeapPointer
+                        # But for numbers/strings/bools it's fine.
+                        if idx < len(self.stack):
+                            self.stack[idx] = val
+                            
+            elif op == 'LOAD_PYTHON_GLOBAL':
+                # Load a variable from the Python environment (dynamic lookup)
+                name = arg
+                if hasattr(self, 'python_env'):
+                    if arg.startswith('"') and arg.endswith('"'):
+                         name = arg[1:-1]
+                    
+                    if name in self.python_env:
+                        self.stack.append(self.python_env[name])
+                    else:
+                         print(f"Runtime Error: Undefined variable '{name}'")
+                         sys.exit(1)
+                else:
+                    print(f"Runtime Error: Undefined variable '{name}' (Python env not initialized)")
+                    sys.exit(1)
+            
+            elif op == 'EXEC_JAVASCRIPT':
+                # Execute Javascript code (Node.js)
+                code = self.stack.pop()
+                if not hasattr(self, 'symbol_table'):
+                    self.symbol_table = {}
+                
+                # 1. Prepare Environment (Serialize globals)
+                js_env = {}
+                for name, idx in self.symbol_table.items():
+                    if idx < len(self.stack) and idx < self.global_count:
+                        val = self.stack[idx]
+                        # Convert basic types
+                        js_env[name] = self.to_python(val)
+                
+                import json
+                import subprocess
+                
+                # Write input JSON
+                with open('_hic_js_in.json', 'w') as f:
+                    # Filter out complex objects that can't be JSON serialized easily (like Tensors)
+                    safe_env = {}
+                    for k, v in js_env.items():
+                        try:
+                            json.dumps(v)
+                            safe_env[k] = v
+                        except:
+                            pass # Skip non-serializable objects
+                    json.dump(safe_env, f)
+                
+                # 2. Create Wrapper Script
+                wrapper_script = f"""
+const fs = require('fs');
+const vm = require('vm');
+
+try {{
+    const inputData = JSON.parse(fs.readFileSync('_hic_js_in.json', 'utf8'));
+    const context = vm.createContext(inputData);
+    
+    // User code
+    const userCode = `
+{code}
+`;
+    
+    vm.runInContext(userCode, context);
+    
+    // Write output
+    fs.writeFileSync('_hic_js_out.json', JSON.stringify(context));
+}} catch (e) {{
+    console.error('JS Error:', e);
+    process.exit(1);
+}}
+"""
+                with open('_hic_js_runner.js', 'w') as f:
+                    f.write(wrapper_script)
+                
+                # 3. Execute
+                result = subprocess.run(['node', '_hic_js_runner.js'], capture_output=True, text=True)
+                
+                if result.returncode != 0:
+                    print(f"Runtime Error in _javascript_: {result.stderr}")
+                    sys.exit(1)
+                
+                # 4. Sync Back
+                try:
+                    with open('_hic_js_out.json', 'r') as f:
+                        output_env = json.load(f)
+                    
+                    # Update HIC globals
+                    for name, idx in self.symbol_table.items():
+                        if name in output_env:
+                            val = output_env[name]
+                            if idx < len(self.stack):
+                                self.stack[idx] = val
+                    
+                    # Also update python_env if it exists so dynamic Lookups work consistently
+                    if not hasattr(self, 'python_env'):
+                        self.python_env = {}
+                    
+                    # Store new variables from JS into python_env so LOAD_PYTHON_GLOBAL can find them
+                    # (Renaming opcode conceptually to LOAD_DYNAMIC_GLOBAL might be better later)
+                    for k, v in output_env.items():
+                        if k not in self.symbol_table:
+                             self.python_env[k] = v
+                             
+                except Exception as e:
+                    print(f"Error syncing JS state: {e}")
+
             elif op == 'IMPORT_PYTHON':
                 # Import Python module (local file or installed package)
                 module_name = arg

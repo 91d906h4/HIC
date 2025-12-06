@@ -1,0 +1,12 @@
+var angle = 0.0;
+var code = `
+import math
+print(f"Python internal: angle = {angle}")
+ans = math.cos(angle)
+angle = 3.14159
+`;
+
+_python_(code);
+
+print("From HIC: ans = " + str(ans));
+print("From HIC: angle updated = " + str(angle));

@@ -72,6 +72,7 @@ class CodeGen:
             if isinstance(stmt, parser.VarDecl):
                 if stmt.name not in self.globals:
                     self.globals[stmt.name] = global_offset
+                    # print(f"DEBUG: Found Global: {stmt.name} at {global_offset}")
                     global_offset += 1
             elif isinstance(stmt, parser.Block):
                 for s in stmt.statements:
@@ -99,6 +100,11 @@ class CodeGen:
                 self.function_signatures[stmt.name] = param_names
 
         main_label = self.new_label()
+        
+        # Emit symbol table for runtime variable sharing
+        import json
+        self.emit(f"SYMBOL_TABLE {json.dumps(self.globals)}")
+        
         self.emit(f'JMP {main_label}')
         
         # Emit functions and classes before main code
@@ -232,9 +238,13 @@ class CodeGen:
         else:
             # var a;
             self.emit('PUSH 0') # Init to 0 or none
-            offset = self.current_offset
-            self.define_var(node.name)
-            self.emit(f'STORE {offset}')  # Store the initial value
+            # Check if it's a global variable
+            if node.name in self.globals:
+                self.emit(f'STORE_GLOBAL {self.globals[node.name]}')
+            else:
+                offset = self.current_offset
+                self.define_var(node.name)
+                self.emit(f'STORE {offset}')  # Store the initial value
 
     def visit_Return(self, node):
         self.generate(node.expr)
@@ -378,15 +388,19 @@ class CodeGen:
             self.emit(f'PUSH_MODULE {node.token.value}')
         else:
             # Regular variable
-            is_global, offset = self.get_var_offset(node.token.value)
-            if is_global:
-                self.emit(f'LOAD_GLOBAL {offset}')
-            else:
-                self.emit(f'LOAD {offset}')
+            try:
+                is_global, offset = self.get_var_offset(node.token.value)
+                if is_global:
+                    self.emit(f'LOAD_GLOBAL {offset}')
+                else:
+                    self.emit(f'LOAD {offset}')
+            except:
+                # If not found in scopes, assume it's a dynamic variable (e.g. from Python)
+                self.emit(f'LOAD_PYTHON_GLOBAL "{node.token.value}"')
 
     def visit_FunctionCall(self, node):
-        builtins = ['print', 'len', 'abs', 'push', 'pop', 'input', 'readfile', 'writefile', 'int', 'str', 'typeof']
-        void_builtins = ['print', 'push']  # Functions that don't return values
+        builtins = ['print', 'len', 'abs', 'push', 'pop', 'input', 'readfile', 'writefile', 'int', 'str', 'typeof', '_python_', '_javascript_']
+        void_builtins = ['print', 'push', '_python_', '_javascript_']  # Functions that don't return values
         
         # Check if this is a class instantiation
         if hasattr(self, 'classes') and node.name in self.classes:
@@ -424,6 +438,14 @@ class CodeGen:
                 self.generate(arg)
                 self.emit('PRINT')
             # Print returns nothing
+        elif node.name == '_python_':
+            # Execute inline Python code
+            self.generate(node.args[0])
+            self.emit('EXEC_PYTHON')
+        elif node.name == '_javascript_':
+            # Execute inline JavaScript code (Node.js)
+            self.generate(node.args[0])
+            self.emit('EXEC_JAVASCRIPT')
         elif node.name in builtins:
             # Other built-in functions
             for arg in node.args:

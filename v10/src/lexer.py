@@ -194,6 +194,9 @@ class Lexer:
             if self.current_char == "'":
                 return Token(TokenType.STRING, self.string("'"))
 
+            if self.current_char == '`':
+                return Token(TokenType.STRING, self.string('`'))
+
             if self.current_char.isalpha() or self.current_char == '_':
                 return self._id()
 
