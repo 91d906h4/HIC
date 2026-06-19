@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m hylang compile math.hy -o /tmp/math.hyb)",
+      "Read(//tmp/**)",
+      "Bash(python -m pytest -q)",
+      "Bash(python -m hylang run development.hy)",
+      "Bash(python -c ' *)"
+    ]
+  }
+}

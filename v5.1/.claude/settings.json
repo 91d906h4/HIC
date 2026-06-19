@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python compiler.py fibonacci.hy /tmp/fib.hya)",
+      "Bash(python executer.py /tmp/fib.hya)",
+      "Bash(python compiler.py math.hy /tmp/math.hya)",
+      "Bash(python executer.py /tmp/math.hya)",
+      "Bash(python compiler.py perceptron.hy /tmp/perc.hya)"
+    ]
+  }
+}
